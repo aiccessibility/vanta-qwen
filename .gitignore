@@ -3,9 +3,9 @@
 node_modules/
 
 # Build outputs
-.next/
 dist/
 build/
+.next/
 out/
 
 # Environment variables
@@ -13,45 +13,34 @@ out/
 .env.local
 .env.*
 
-# Python
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Python cache (if present)
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
+
+# Coverage reports
+coverage/
+htmlcov/
 .coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-*.pot
-*.po
-*~
-.pytest_cache/
-.mypy_cache/
-.hypothesis/
 
-# Next.js
-.next/
-out/
-
-# VS Code
-.vscode/
+# Temporary files
+*.tmp
+*.temp
 
 # OS generated files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
+
+# Database migrations (keep for reference)
+# supabase/migrations/*.sql - keeping since these are source files
 ```
