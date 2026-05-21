@@ -6,17 +6,28 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:migrate": "supabase db push",
+    "db:seed": "tsx supabase/seed/seed.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
+    "@supabase/ssr": "^0.1.0",
     "next": "14.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "openai": "^4.28.0",
     "zustand": "^4.5.0",
     "zod": "^3.22.4",
-    "tesseract.js": "^5.0.4"
+    "tesseract.js": "^5.0.4",
+    "lucide-react": "^0.321.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.2.0",
+    "plaid": "^23.0.0",
+    "recharts": "^2.12.0",
+    "date-fns": "^3.3.1",
+    "nuqs": "^1.17.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
@@ -27,6 +38,8 @@
     "postcss": "^8.4.33",
     "autoprefixer": "^10.4.17",
     "eslint": "^8.56.0",
-    "eslint-config-next": "14.1.0"
+    "eslint-config-next": "14.1.0",
+    "supabase": "^1.136.0",
+    "tsx": "^4.7.0"
   }
 }
