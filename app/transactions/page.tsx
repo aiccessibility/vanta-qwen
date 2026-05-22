@@ -1,71 +1,130 @@
+'use client'
+
+import { useState } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
+import { formatCurrency, formatDate } from '@/lib/utils'
+import { Plus, Search, Filter } from 'lucide-react'
+
+// Mock data - will be replaced with real data from API
+const mockTransactions = [
+  { id: '1', date: new Date('2024-12-20'), description: 'Stripe Payment', amount: 1250, category: 'Sales', status: 'Completed' },
+  { id: '2', date: new Date('2024-12-19'), description: 'AWS Services', amount: -320, category: 'Software', status: 'Completed' },
+  { id: '3', date: new Date('2024-12-18'), description: 'Office Supplies', amount: -85.50, category: 'Office', status: 'Completed' },
+  { id: '4', date: new Date('2024-12-17'), description: 'Client Payment', amount: 2500, category: 'Services', status: 'Completed' },
+  { id: '5', date: new Date('2024-12-16'), description: 'Software License', amount: -199, category: 'Software', status: 'Pending' },
+]
+
 export default function TransactionsPage() {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filterType, setFilterType] = useState('all')
+  const [filterCategory, setFilterCategory] = useState('all')
+
+  const filteredTransactions = mockTransactions.filter(t => {
+    if (searchTerm && !t.description.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return false
+    }
+    if (filterType !== 'all') {
+      const isIncome = t.amount > 0
+      if (filterType === 'income' && !isIncome) return false
+      if (filterType === 'expense' && isIncome) return false
+    }
+    if (filterCategory !== 'all' && t.category !== filterCategory) {
+      return false
+    }
+    return true
+  })
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Transactions</h1>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-sm font-medium">
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Transactions</h1>
+          <p className="text-gray-500 mt-1">Manage and categorize your financial transactions</p>
+        </div>
+        <Button>
+          <Plus className="mr-2 h-4 w-4" />
           Import Transactions
-        </button>
+        </Button>
       </div>
 
-      <div className="bg-white shadow rounded-lg overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <div className="flex gap-4">
-            <input
-              type="text"
-              placeholder="Search transactions..."
-              className="flex-1 max-w-md px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm"
-            />
-            <select className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
-              <option>All Types</option>
-              <option>Income</option>
-              <option>Expense</option>
+      <Card>
+        <CardHeader>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                placeholder="Search transactions..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="all">All Types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
             </select>
-            <select className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
-              <option>All Categories</option>
-              <option>Sales</option>
-              <option>Services</option>
-              <option>Office</option>
-              <option>Software</option>
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="all">All Categories</option>
+              <option value="Sales">Sales</option>
+              <option value="Services">Services</option>
+              <option value="Software">Software</option>
+              <option value="Office">Office</option>
             </select>
           </div>
-        </div>
-
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            <tr>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 20, 2024</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Stripe Payment</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Sales</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-green-600">+$1,250.00</td>
-              <td className="px-6 py-4 whitespace-nowrap"><span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span></td>
-            </tr>
-            <tr>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 19, 2024</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AWS Services</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Software</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600">-$320.00</td>
-              <td className="px-6 py-4 whitespace-nowrap"><span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span></td>
-            </tr>
-            <tr>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dec 18, 2024</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Office Supplies</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Office</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600">-$85.50</td>
-              <td className="px-6 py-4 whitespace-nowrap"><span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredTransactions.map((transaction) => (
+                  <tr key={transaction.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {formatDate(transaction.date)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {transaction.description}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <Badge variant="secondary">{transaction.category}</Badge>
+                    </td>
+                    <td className={`px-6 py-4 whitespace-nowrap text-sm font-semibold ${
+                      transaction.amount >= 0 ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {transaction.amount >= 0 ? '+' : ''}{formatCurrency(transaction.amount)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Badge variant={transaction.status === 'Completed' ? 'success' : 'warning'}>
+                        {transaction.status}
+                      </Badge>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
