@@ -22,16 +22,11 @@ out/
 # Logs
 *.log
 
-# Python cache (if present)
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-
-# Coverage reports
-coverage/
-htmlcov/
-.coverage
 
 # Temporary files
 *.tmp
@@ -41,6 +36,14 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Database migrations (keep for reference)
-# supabase/migrations/*.sql - keeping since these are source files
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Cache directories
+.cache/
+.mypy_cache/
+.pytest_cache/
+.nyc_output/
 ```
