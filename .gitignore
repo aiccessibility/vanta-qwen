@@ -1,49 +1,34 @@
 ```
 # Dependencies
 node_modules/
+.pnpm-store/
 
 # Build outputs
-dist/
-build/
 .next/
 out/
+dist/
+build/
+
+# Logs
+*.log
 
 # Environment variables
-.env
 .env.local
-.env.*
+.env.development.local
+.env.test.local
+.env.production.local
 
-# IDE files
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Logs
-*.log
-
-# Python cache
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Temporary files
-*.tmp
-*.temp
-
-# OS generated files
+# OS
 .DS_Store
 Thumbs.db
 
-# Coverage reports
+# Coverage
 coverage/
-htmlcov/
-.coverage
-
-# Cache directories
-.cache/
-.mypy_cache/
-.pytest_cache/
 .nyc_output/
 ```
